@@ -2,12 +2,9 @@
 - hosts: linux
   become_method: sudo
   tasks:
-    - command: whoami
-    
     - name: Update apt repo and cache on all Debian/Ubuntu boxes
       remote_user: matt
       become: true
-    - command: whoami      
       apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
 
     - name: Upgrade all packages on servers
@@ -18,7 +15,6 @@
       stat: path=/var/run/reboot-required get_checksum=false
 
     - name: Reboot the box if kernel updated
-      environment: "{{proxy_env}}"
       reboot:
         msg: "Reboot initiated by Ansible for kernel updates"
         connect_timeout: 5
