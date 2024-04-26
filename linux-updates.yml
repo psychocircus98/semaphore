@@ -2,6 +2,8 @@
 - hosts: linux
   become: true
   become_user: matt
+  remote_user: matt
+  become_method: sudo
   tasks:
     - name: Update apt repo and cache on all Debian/Ubuntu boxes
       apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
