@@ -1,11 +1,13 @@
 ---
 - hosts: linux
-  become: true
-  become_user: matt
-  remote_user: matt
   become_method: sudo
   tasks:
+    - command: whoami
+    
     - name: Update apt repo and cache on all Debian/Ubuntu boxes
+      remote_user: matt
+      become: true
+    - command: whoami      
       apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
 
     - name: Upgrade all packages on servers
