@@ -1,23 +1,15 @@
 ---
 - hosts: linux
-    
+  become: true
+  become_method: su    
   tasks:
     - name: Update apt repo and cache on all Debian/Ubuntu boxes
       apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
-      become: true
-      become_method: su
-
     - name: Upgrade all packages on servers
       apt: upgrade=dist force_apt_get=yes
-      become: true
-      become_method: su
-
     - name: Check if a reboot is needed on all servers
       register: reboot_required_file
       stat: path=/var/run/reboot-required get_checksum=false
-      become: true
-      become_method: su
-
     - name: Reboot the box if kernel updated
       reboot:
         msg: "Reboot initiated by Ansible for kernel updates"
@@ -27,5 +19,3 @@
         post_reboot_delay: 30
         test_command: uptime
       when: reboot_required_file.stat.exists
-      become: true
-      become_method: su
